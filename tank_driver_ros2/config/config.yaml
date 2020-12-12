@@ -1,0 +1,17 @@
+# Define the pins
+tank_contol:
+  ros__parameters:
+    left_motor_forward: 20
+    left_motor_backward: 21 
+    right_motor_forward: 19
+    right_motor_backward: 26
+    left_motor_pwm: 16
+    right_motor_pwm: 13
+
+    timeout: 5
+
+    rate: 50
+    max_speed: 1.5
+    max_pwm: 255
+    # The distance between two wheel(track)
+    wheel_base: 1 #0.15
