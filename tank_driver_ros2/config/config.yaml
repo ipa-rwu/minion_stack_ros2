@@ -10,7 +10,7 @@ tank_contol:
 
     timeout: 2.0
     rate: 50
-    max_speed: 1.5
+    max_speed: 2
     max_pwm: 255
     # The distance between two wheel(track)
     wheel_base: 1 #0.15
