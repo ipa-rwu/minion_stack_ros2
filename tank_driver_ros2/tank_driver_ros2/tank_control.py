@@ -83,7 +83,7 @@ class TankControlNode(Node):
             100 * left_speed/self._max_speed)
         self._right_speed_percent = (
             100 * right_speed/self._max_speed)
-        self.get_logger().info('left_speed_percent: "%s"' % self._left_speed_percent)
+        # self.get_logger().info('left_speed_percent: "%s"' % self._left_speed_percent)
 
     
     def shutdown(self):
@@ -97,9 +97,6 @@ class TankControlNode(Node):
 
     def control_motor(self):
         delay = self._time_to_double(self.get_clock().now().to_msg()) - self._last_received
-        self.get_logger().info('delay: "%s"' % delay)
-        self.get_logger().info('timeout: "%s"' % self.timeout)
-        self.get_logger().info('rate: "%s"' % self.rate)
 
         if delay <= self.timeout:
             self.get_logger().info('move motor')
