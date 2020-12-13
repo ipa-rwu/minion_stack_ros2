@@ -1,7 +1,8 @@
 from setuptools import setup
 import os
-package_name = 'tank_driver_ros2'
 import glob
+
+package_name = 'tank_driver_ros2'
 
 setup(
     name=package_name,

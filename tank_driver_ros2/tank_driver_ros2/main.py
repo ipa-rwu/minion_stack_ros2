@@ -1,18 +1,24 @@
 #!/usr/bin/env python3
 from tank_driver_ros2.tank_control import TankControlNode
 import rclpy
+from rclpy.executors import SingleThreadedExecutor
+import threading
+
 
 def main():
     rclpy.init()
 
     tank_control_node = TankControlNode()
-    rate = tank_control_node.create_rate(10)
+
+    # Spin in a separate thread
+    _thread = threading.Thread(target=rclpy.spin, args=(tank_control_node, ), daemon=True)
+    _thread.start()  
+
+    rate = tank_control_node.create_rate(tank_control_node.rate)
 
     try:
         while rclpy.ok():
             tank_control_node.control_motor()
-            print('Help me body, you are my only hope')            
-            rclpy.spin(tank_control_node)
             rate.sleep()
     except KeyboardInterrupt:
         pass
@@ -22,3 +28,4 @@ def main():
     tank_control_node.shutdown()
     tank_control_node.destroy_node()
     rclpy.shutdown()
+    _thread.join()

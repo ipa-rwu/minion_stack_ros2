@@ -1,8 +1,7 @@
-#!/usr/bin/env python
-# import RPi.GPIO as GPIO
+#!/usr/bin/env python3
+import RPi.GPIO as GPIO
 
 import rclpy
-import threading
 from rclpy.node import Node
 
 from geometry_msgs.msg import Twist
@@ -21,38 +20,30 @@ class TankControlNode(Node):
                 ('right_motor_forward', None),
                 ('right_motor_pwm', None),
                 ('left_motor_pwm', None),
-                ('timeout', "2"),
+                ('timeout', '2'),
                 ('rate', "50"),
                 ('max_speed', "0.1"),
                 ('wheel_base', "0.15")
             ])
 
-        # self.declare_parameter('left_motor_forward')
-        # self.declare_parameter('left_motor_backward')
-        # self.declare_parameter('right_motor_forward')
-        # self.declare_parameter('right_motor_backward')
-        # self.declare_parameter('left_motor_pwm')
-        # self.declare_parameter('right_motor_pwm')
-
         # Pin numbers are the GPIO# value, not the literal pin number.
         pin_left_forward = self.get_parameter('left_motor_forward').get_parameter_value().integer_value
-        pin_left_backward = self.get_parameter('left_motor_backward')
+        pin_left_backward = self.get_parameter('left_motor_backward').get_parameter_value().integer_value
 
-        pin_right_forward = self.get_parameter('right_motor_forward')
-        pin_right_backward = self.get_parameter('right_motor_backward')
+        pin_right_forward = self.get_parameter('right_motor_forward').get_parameter_value().integer_value
+        pin_right_backward = self.get_parameter('right_motor_backward').get_parameter_value().integer_value
 
-        pin_left_pwm = self.get_parameter('left_motor_pwm')
-        pin_right_pwm = self.get_parameter('right_motor_pwm')
+        pin_left_pwm = self.get_parameter('left_motor_pwm').get_parameter_value().integer_value
+        pin_right_pwm = self.get_parameter('right_motor_pwm').get_parameter_value().integer_value
 
-        self._timeout = self.get_parameter('timeout')
-        self._rate = self.get_parameter('rate')
+        self.timeout = self.get_parameter('timeout').get_parameter_value().double_value
+        self.rate = self.get_parameter('rate').get_parameter_value().double_value
         self._max_speed = self.get_parameter('max_speed').get_parameter_value().double_value
         self._wheel_base = self.get_parameter('wheel_base').get_parameter_value().double_value
 
         self._cmd_vel_topic = '/cmd_vel'
 
         self._last_received = self._time_to_double(self.get_clock().now().to_msg())
-        self.get_logger().info('max_speed: "%f"' %self._max_speed)
         
         # Setup subscriber for velocity twist message
         self.vel_subscriber = self.create_subscription(
@@ -64,15 +55,14 @@ class TankControlNode(Node):
 
         self._left_speed_percent = 0
         self._right_speed_percent = 0
-        # self._left_motor = MotorGPIO(pin_left_forward, pin_left_backward, pin_left_pwm)
-        # self._right_motor = MotorGPIO(pin_right_forward, pin_right_backward, pin_right_pwm)
-
+        self._left_motor = MotorGPIO(pin_left_forward, pin_left_backward, pin_left_pwm)
+        self._right_motor = MotorGPIO(pin_right_forward, pin_right_backward, pin_right_pwm)
+        self.get_logger().info('self.timeout: %f'% self.timeout)
 
     """Handle new velocity command message."""
     def __velocity_callback(self, msg):
         
         self._last_received = self._time_to_double(self.get_clock().now().to_msg())
-        self.get_logger().info('_last_received: "%f"' % self._last_received)
 
         # Extract linear and angular velocities from the message
         linear = msg.linear.x
@@ -97,24 +87,24 @@ class TankControlNode(Node):
     
     def shutdown(self):
         # Reset pin state.
-        print("stop")
-        # self._left_motor.stop_motor()
-        # self._right_motor.stop_motor()
+        self._left_motor.stop_motor()
+        self._right_motor.stop_motor()
 
     def _time_to_double(self, timestemp):
         time_double = timestemp.sec + timestemp.nanosec*1e-9
         return time_double
 
     def control_motor(self):
-        print("move motor")
-        self.get_logger().info('_last_received: "%f"' %self._last_received)
         delay = self._time_to_double(self.get_clock().now().to_msg()) - self._last_received
         self.get_logger().info('delay: "%s"' % delay)
-        # if delay < self._timeout:
-        #     print("move motor")
-        # #     self._left_motor.move(self._left_speed_percent)
-        # #     self._right_motor.move(self._right_speed_percent)
-        # else:
-        #     print("stop motor")
-        #     self._left_motor.move(0)
-        #     self._right_motor.move(0)
+        self.get_logger().info('timeout: "%s"' % self.timeout)
+        self.get_logger().info('rate: "%s"' % self.rate)
+
+        if delay <= self.timeout:
+            self.get_logger().info('move motor')
+            self._left_motor.move(self._left_speed_percent)
+            self._right_motor.move(self._right_speed_percent)
+        elif delay > self.timeout:
+            self.get_logger().info('stop motor')
+            self._left_motor.move(0)
+            self._right_motor.move(0)

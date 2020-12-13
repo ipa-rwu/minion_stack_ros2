@@ -8,9 +8,8 @@ tank_contol:
     left_motor_pwm: 16
     right_motor_pwm: 13
 
-    timeout: 5
-
-    rate: 50
+    timeout: 2.0
+    rate: 0.1
     max_speed: 1.5
     max_pwm: 255
     # The distance between two wheel(track)
