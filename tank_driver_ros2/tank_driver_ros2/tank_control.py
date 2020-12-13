@@ -99,10 +99,10 @@ class TankControlNode(Node):
         delay = self._time_to_double(self.get_clock().now().to_msg()) - self._last_received
 
         if delay <= self.timeout:
-            self.get_logger().info('move motor')
+            # self.get_logger().info('move motor')
             self._left_motor.move(self._left_speed_percent)
             self._right_motor.move(self._right_speed_percent)
         elif delay > self.timeout:
-            self.get_logger().info('stop motor')
+            # self.get_logger().info('stop motor')
             self._left_motor.move(0)
             self._right_motor.move(0)
