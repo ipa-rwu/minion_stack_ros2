@@ -5,6 +5,7 @@ import rclpy
 from rclpy.node import Node
 
 from geometry_msgs.msg import Twist
+from tank_control.motor_control import MotorGPIO
 
 class TankControlNode(Node):
 
