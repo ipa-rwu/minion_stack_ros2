@@ -49,4 +49,11 @@ def generate_launch_description():
             PythonLaunchDescriptionSource([lidar_pkg_dir, '/rplidar.launch.py']),
             launch_arguments={'port': '/dev/ttyUSB0', 'frame_id': 'base_scan'}.items(),
         ),
+
+        Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            arguments=["0.1 0 0.3 0 -1 0 0 /base_link /laser 10"],
+            output='screen',
+            ),
     ])
