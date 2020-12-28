@@ -49,11 +49,4 @@ def generate_launch_description():
             PythonLaunchDescriptionSource([lidar_pkg_dir, '/rplidar.launch.py']),
             launch_arguments={'port': '/dev/ttyUSB0', 'frame_id': 'base_scan'}.items(),
         ),
-
-        Node(
-            package='minion_bringup',
-            executable='minion_ros2',
-            # parameters=[tb3_param_dir],
-            # arguments=['-i', usb_port],
-            output='screen'),
     ])
