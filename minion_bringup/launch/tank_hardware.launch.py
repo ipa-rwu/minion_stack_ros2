@@ -17,6 +17,10 @@ def generate_launch_description():
         'lidar_pkg_dir',
         default=os.path.join(get_package_share_directory('rplidar_ros'), 'launch'))
 
+    tank_driver_pkg_dir = LaunchConfiguration(
+        'tank_driver_pkg_dir',
+        default=os.path.join(get_package_share_directory('tank_driver_ros2'), 'launch'))
+
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
 
     return LaunchDescription([
@@ -37,7 +41,7 @@ def generate_launch_description():
 
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
-                [ThisLaunchFileDir(), '/tank_driver_launch.py']),
+                [tank_driver_pkg_dir, '/tank_driver_launch.py']),
             launch_arguments={'use_sim_time': use_sim_time}.items(),
         ),
 
