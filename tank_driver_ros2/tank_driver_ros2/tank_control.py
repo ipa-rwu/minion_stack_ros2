@@ -93,9 +93,9 @@ class TankControlNode(Node):
         self._imu = MPU6050(0x68)
         self.imu_data = Imu()
         self.imu_data.header.frame_id = self._imu_frame_id
-        self.imu_data.orientation_covariance = [0.0025, 0, 0, 0, 0.0025, 0, 0, 0, 0.0025]
-        self.imu_data.angular_velocity_covariance = [0.02, 0, 0, 0, 0.02, 0, 0, 0, 0.02]
-        self.imu_data.linear_acceleration_covariance = [0.04, 0, 0, 0, 0.04, 0, 0, 0, 0.04]
+        # self.imu_data.orientation_covariance = [0.0025, 0, 0, 0, 0.0025, 0, 0, 0, 0.0025]
+        # self.imu_data.angular_velocity_covariance = [0.02, 0, 0, 0, 0.02, 0, 0, 0, 0.02]
+        # self.imu_data.linear_acceleration_covariance = [0.04, 0, 0, 0, 0.04, 0, 0, 0, 0.04]
         self.gyroAngleX = 0
         self.gyroAngleY = 0
         self.yaw = 0
