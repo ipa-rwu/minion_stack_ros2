@@ -228,7 +228,7 @@ class MPU6050:
                 gyroCalli[j] += gyroPresent[j]
         for j in range(3):
             gyroCalli[j] = gyroCalli[j]/5000
-        return gyroCalli
+        return {'x': gyroCalli[0], 'y': gyroCalli[1], 'z': gyroCalli[2]}
 
     def get_gyro_data(self):
         """Gets and returns the X, Y and Z values from the gyroscope.
