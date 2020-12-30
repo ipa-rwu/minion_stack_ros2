@@ -159,7 +159,7 @@ class TankControlNode(Node):
         self.imu_data.orientation.y = rot_quat[1]
         self.imu_data.orientation.z = rot_quat[2]
         self.imu_data.orientation.w = rot_quat[3]
-        self.pub_imu.publish(self.imu_data)
+        self.publisher_imu.publish(self.imu_data)
 
         self._last_pub_imu = self._time_to_double(now)
 
