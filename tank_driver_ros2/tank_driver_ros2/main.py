@@ -19,6 +19,7 @@ def main():
     try:
         while rclpy.ok():
             tank_control_node.control_motor()
+            tank_control_node.pub_imu()
             rate.sleep()
     except KeyboardInterrupt:
         pass

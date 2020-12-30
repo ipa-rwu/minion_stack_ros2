@@ -6,7 +6,8 @@ Copyright 2015
 """
 
 import smbus
-
+from scipy.spatial.transform import Rotation
+import math
 class MPU6050:
 
     # Global Variables
@@ -143,17 +144,18 @@ class MPU6050:
                 return 16
             else:
                 return -1
-        # tank offset: 0.430 -0.118 0.680 
+
+    # tank offset: 0.120 -0.538 10.155 
     def callibrate_accel(self):
         accelCalli = [0,0,0]
-        for i in range(10000):
+        for i in range(500):
             accelPresent =  self.get_accel_data()
             accelCalli[0] += accelPresent['x']
             accelCalli[1] += accelPresent['y']
             accelCalli[2] += accelPresent['z']
 
         for j in range(3):
-            accelCalli[j] = accelCalli[j]/10000
+            accelCalli[j] = accelCalli[j]/500
         return {'x': accelCalli[0], 'y': accelCalli[1], 'z': accelCalli[2]}
 
     def get_accel_data(self, g = False):
@@ -194,6 +196,14 @@ class MPU6050:
             y = y * self.GRAVITIY_MS2
             z = z * self.GRAVITIY_MS2
             return {'x': x, 'y': y, 'z': z}
+    
+    # Calculating Roll and Pitch from the accelerometer data
+    def get_accel_angle(self, accError):
+        accel = self.get_accel_data()
+        accAngleX = (math.atan(accel['y'] / math.sqrt(math.pow(accel['x'], 2) + math.pow(accel['z'], 2))) * 180 / math.pi) - accError[0]
+        # AccErrorX ~(0.58) See the calculate_IMU_error()custom function for more details
+        accAngleY = (math.atan(-1 * accel['x'] / math.sqrt(math.pow(accel['y'], 2) + math.pow(accel['z'], 2))) * 180 / math.pi) + accError[1]
+        return {'x': accAngleX, 'y': accAngleY}
 
     def set_gyro_range(self, gyro_range):
         """Sets the range of the gyroscope to range.
@@ -232,17 +242,17 @@ class MPU6050:
             else:
                 return -1
 
-    # tank offset: 0.430 -0.118 0.680 
+    # tank offset: 0.430 -0.120 0.690 
     def callibrate_gyro(self):
         gyroCalli = [0,0,0]
-        for i in range(10000):
+        for i in range(500):
             gyroPresent =  self.get_gyro_data()
             gyroCalli[0] += gyroPresent['x']
             gyroCalli[1] += gyroPresent['y']
             gyroCalli[2] += gyroPresent['z']
 
         for j in range(3):
-            gyroCalli[j] = gyroCalli[j]/10000
+            gyroCalli[j] = gyroCalli[j]/500
         return {'x': gyroCalli[0], 'y': gyroCalli[1], 'z': gyroCalli[2]}
 
     def get_gyro_data(self):

@@ -14,3 +14,12 @@ tank_contol:
     max_pwm: 255
     # The distance between two wheel(track)
     wheel_base: 1 #0.15
+    
+    imu_frame_id: imu_link
+    imu_bus: 3
+    accel_offset_x: 0.120
+    accel_offset_y: -0.538
+    accel_offset_z: 10.155
+    gyro_offset_x: 0.430
+    gyro_offset_y: 0.120
+    gyro_offset_z: 0.690
