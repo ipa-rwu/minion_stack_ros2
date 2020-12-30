@@ -143,6 +143,18 @@ class MPU6050:
                 return 16
             else:
                 return -1
+        # tank offset: 0.430 -0.118 0.680 
+    def callibrate_accel(self):
+        accelCalli = [0,0,0]
+        for i in range(10000):
+            accelPresent =  self.get_accel_data()
+            accelCalli[0] += accelPresent['x']
+            accelCalli[1] += accelPresent['y']
+            accelCalli[2] += accelPresent['z']
+
+        for j in range(3):
+            accelCalli[j] = accelCalli[j]/10000
+        return {'x': accelCalli[0], 'y': accelCalli[1], 'z': accelCalli[2]}
 
     def get_accel_data(self, g = False):
         """Gets and returns the X, Y and Z values from the accelerometer.
@@ -220,16 +232,17 @@ class MPU6050:
             else:
                 return -1
 
+    # tank offset: 0.430 -0.118 0.680 
     def callibrate_gyro(self):
         gyroCalli = [0,0,0]
-        for i in range(5000):
+        for i in range(10000):
             gyroPresent =  self.get_gyro_data()
             gyroCalli[0] += gyroPresent['x']
             gyroCalli[1] += gyroPresent['y']
             gyroCalli[2] += gyroPresent['z']
 
         for j in range(3):
-            gyroCalli[j] = gyroCalli[j]/5000
+            gyroCalli[j] = gyroCalli[j]/10000
         return {'x': gyroCalli[0], 'y': gyroCalli[1], 'z': gyroCalli[2]}
 
     def get_gyro_data(self):
@@ -275,6 +288,8 @@ if __name__ == "__main__":
     mpu = MPU6050(0x68)
     print(mpu.get_temp())
     print(mpu.callibrate_gyro())
+    print(mpu.callibrate_accel())
+
     # accel_data = mpu.get_accel_data()
     # print(accel_data['x'])
     # print(accel_data['y'])
