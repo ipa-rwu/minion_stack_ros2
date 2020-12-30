@@ -98,7 +98,7 @@ class TankControlNode(Node):
         # self.imu_data.linear_acceleration_covariance = [0.04, 0, 0, 0, 0.04, 0, 0, 0, 0.04]
         self.gyroAngleX = 0
         self.gyroAngleY = 0
-        self.yaw = 0
+        self.imu_yaw = 0
 
 
     """Handle new velocity command message."""
