@@ -81,7 +81,7 @@ class TankControlNode(Node):
         self.vel_subscriber
 
         # Setup publisher for imu message
-        self.publisher_imu = self.create_publisher(Imu, self._imu_topic, self._imu_callback, 10)
+        self.publisher_imu = self.create_publisher(Imu, self._imu_topic, 10)
         self._last_pub_imu = self._time_to_double(self.get_clock().now().to_msg())
 
         self._left_speed_percent = 0
