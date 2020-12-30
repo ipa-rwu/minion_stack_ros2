@@ -272,7 +272,7 @@ class MPU6050:
 if __name__ == "__main__":
     mpu = MPU6050(0x68)
     print(mpu.get_temp())
-    print(mpu.callibrate_gyro)
+    print(mpu.callibrate_gyro())
     # accel_data = mpu.get_accel_data()
     # print(accel_data['x'])
     # print(accel_data['y'])
