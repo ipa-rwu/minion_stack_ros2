@@ -224,8 +224,10 @@ class MPU6050:
         gyroCalli = [0,0,0]
         for i in range(5000):
             gyroPresent =  self.get_gyro_data()
-            for j in range(3):
-                gyroCalli[j] += gyroPresent[j]
+            gyroCalli[0] += gyroPresent['x']
+            gyroCalli[1] += gyroPresent['y']
+            gyroCalli[2] += gyroPresent['z']
+
         for j in range(3):
             gyroCalli[j] = gyroCalli[j]/5000
         return {'x': gyroCalli[0], 'y': gyroCalli[1], 'z': gyroCalli[2]}
