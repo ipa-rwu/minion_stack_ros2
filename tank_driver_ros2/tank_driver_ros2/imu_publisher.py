@@ -14,7 +14,7 @@ class ImuPublisherNode(Node):
         self.declare_parameters(
             namespace='',
             parameters=[
-                ('imu_rate', "10"),
+                ('imu_rate', "10.0"),
                 ('imu_frame_id', 'imu_link'),
                 ('imu_bus', '3'),
                 ('accel_offset_x', '0.120'),
@@ -26,7 +26,7 @@ class ImuPublisherNode(Node):
             ])
 
         # Pin numbers are the GPIO# value, not the literal pin number.
-        self.rate = self.get_parameter('imu_rate').get_parameter_value().integer_value
+        self.rate = self.get_parameter('imu_rate').get_parameter_value().double_value
         self._imu_frame_id = self.get_parameter('imu_frame_id').get_parameter_value().string_value
         self._imu_bus = self.get_parameter('imu_bus').get_parameter_value().integer_value
         _accel_offset_x = self.get_parameter('accel_offset_x').get_parameter_value().double_value
@@ -35,15 +35,20 @@ class ImuPublisherNode(Node):
         _gyro_offset_x = self.get_parameter('gyro_offset_x').get_parameter_value().double_value
         _gyro_offset_y = self.get_parameter('gyro_offset_y').get_parameter_value().double_value
         _gyro_offset_z = self.get_parameter('gyro_offset_z').get_parameter_value().double_value
+        
+        self.get_logger().info('imu rate: %f'% self.rate)
+
 
         self._imu_topic = '/imu'
 
-        self._setAccelOffset['x'] = _accel_offset_x
-        self._setAccelOffset['y'] = _accel_offset_y
-        self._setAccelOffset['z'] = _accel_offset_z
-        self._setGyroOffset['x'] = _gyro_offset_x
-        self._setGyroOffset['y'] = _gyro_offset_y
-        self._setGyroOffset['z'] = _gyro_offset_z
+        self._setAccelOffset = {'x': _accel_offset_x,
+                                'y': _accel_offset_y,
+                                'z': _accel_offset_z
+                                }
+        self._setGyroOffset = {'x': _gyro_offset_x,
+                                'y': _gyro_offset_y,
+                                'z': _gyro_offset_z
+                                }
 
         # Setup publisher for imu message
         self.publisher_imu = self.create_publisher(Imu, self._imu_topic, 10)

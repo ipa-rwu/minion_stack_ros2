@@ -201,9 +201,9 @@ class MPU6050:
     # Calculating Roll and Pitch from the accelerometer data
     def get_accel_angle(self, accError):
         accel = self.get_accel_data()
-        accAngleX = (math.atan(accel['y'] / math.sqrt(math.pow(accel['x'], 2) + math.pow(accel['z'], 2))) * 180 / math.pi) - accError[0]
+        accAngleX = (math.atan(accel['y'] / math.sqrt(math.pow(accel['x'], 2) + math.pow(accel['z'], 2))) * 180 / math.pi) - accError['x']
         # AccErrorX ~(0.58) See the calculate_IMU_error()custom function for more details
-        accAngleY = (math.atan(-1 * accel['x'] / math.sqrt(math.pow(accel['y'], 2) + math.pow(accel['z'], 2))) * 180 / math.pi) + accError[1]
+        accAngleY = (math.atan(-1 * accel['x'] / math.sqrt(math.pow(accel['y'], 2) + math.pow(accel['z'], 2))) * 180 / math.pi) - accError['y']
         return {'x': accAngleX, 'y': accAngleY}
 
     def set_gyro_range(self, gyro_range):

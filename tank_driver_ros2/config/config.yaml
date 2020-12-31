@@ -23,4 +23,4 @@ tank_contol:
     gyro_offset_x: 0.430
     gyro_offset_y: 0.120
     gyro_offset_z: 0.690
-    imu_rate: 10
+    imu_rate: 10.0
