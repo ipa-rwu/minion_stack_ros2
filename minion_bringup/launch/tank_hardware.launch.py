@@ -46,6 +46,12 @@ def generate_launch_description():
         ),
 
         IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                [tank_driver_pkg_dir, '/imu_publsiher_launch.py']),
+            launch_arguments={'use_sim_time': use_sim_time}.items(),
+        ),
+
+        IncludeLaunchDescription(
             PythonLaunchDescriptionSource([lidar_pkg_dir, '/rplidar.launch.py']),
             launch_arguments={'port': '/dev/ttyUSB0', 'frame_id': 'base_scan'}.items(),
         ),
