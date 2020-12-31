@@ -81,7 +81,7 @@ class TankControlNode(Node):
             elif angular < 0:
                 self._right_motor.stop_motor()
                 left_speed = 0.4 + angular*float(self._wheel_base)/2
-                self._right_speed_percent = (100 * left_speed/self._max_speed)  
+                self._left_speed_percent = (100 * left_speed/self._max_speed)  
         else:
             # Calculate wheel speeds in m/s
             left_speed = linear - angular* float(self._wheel_base)/2
