@@ -73,21 +73,31 @@ class TankControlNode(Node):
         linear = msg.linear.x
         angular = msg.angular.z
 
-        # Calculate wheel speeds in m/s
-        left_speed = linear - angular* float(self._wheel_base)/2
-        right_speed = linear + angular*float(self._wheel_base)/2
+        if abs(linear) < 0.1 and abs(angular) > 0.5:
+            if angular > 0:
+                self._left_motor.stop_motor()
+                right_speed = 0.4 + angular*float(self._wheel_base)/2
+                self._right_speed_percent = (100 * right_speed/self._max_speed)  
+            elif angular < 0:
+                self._right_motor.stop_motor()
+                left_speed = 0.4 + angular*float(self._wheel_base)/2
+                self._right_speed_percent = (100 * left_speed/self._max_speed)  
+        else:
+            # Calculate wheel speeds in m/s
+            left_speed = linear - angular* float(self._wheel_base)/2
+            right_speed = linear + angular*float(self._wheel_base)/2
 
-        # Ideally we'd now use the desired wheel speeds along
-        # with data from wheel speed sensors to come up with the
-        # power we need to apply to the wheels, but we don't have
-        # wheel speed sensors. Instead, we'll simply convert m/s
-        # into percent of maximum wheel speed, which gives us a
-        # duty cycle that we can apply to each motor.
-        self._left_speed_percent = (
-            100 * left_speed/self._max_speed)
-        self._right_speed_percent = (
-            100 * right_speed/self._max_speed)
-        # self.get_logger().info('left_speed_percent: "%s"' % self._left_speed_percent)
+            # Ideally we'd now use the desired wheel speeds along
+            # with data from wheel speed sensors to come up with the
+            # power we need to apply to the wheels, but we don't have
+            # wheel speed sensors. Instead, we'll simply convert m/s
+            # into percent of maximum wheel speed, which gives us a
+            # duty cycle that we can apply to each motor.
+            self._left_speed_percent = (
+                100 * left_speed/self._max_speed)
+            self._right_speed_percent = (
+                100 * right_speed/self._max_speed)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             )
+            # self.get_logger().info('left_speed_percent: "%s"' % self._left_speed_percent)
 
     def shutdown(self):
         # Reset pin state.
