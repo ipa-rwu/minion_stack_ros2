@@ -156,6 +156,7 @@ class MPU6050:
 
         for j in range(3):
             accelCalli[j] = accelCalli[j]/500
+        accelCalli[2] = accelCalli[2] - self.GRAVITIY_MS2
         return {'x': accelCalli[0], 'y': accelCalli[1], 'z': accelCalli[2]}
 
     def get_accel_data(self, g = False):
