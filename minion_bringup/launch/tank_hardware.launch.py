@@ -53,7 +53,16 @@ def generate_launch_description():
         Node(
             package='tf2_ros',
             executable='static_transform_publisher',
+            name='tf2_base_link_laser',
             arguments=["0.1", "0", "0.3", "0", "-1", "0", "0", "/base_link", "/laser"],
+            output='screen',
+            ),
+        
+        Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            name='tf2_base_link_imu',
+            arguments=["0", "0", "0", "0", "1", "0", "0", "/base_link", "/imu_link"],
             output='screen',
             ),
     ])
