@@ -14,7 +14,7 @@ class ImuPublisherNode(Node):
         self.declare_parameters(
             namespace='',
             parameters=[
-                ('rate', "10.0"),
+                ('imu_rate', "10.0"),
                 ('imu_frame_id', 'imu_link'),
                 ('imu_bus', '3'),
                 ('accel_offset_x', '0.120'),
@@ -25,7 +25,7 @@ class ImuPublisherNode(Node):
                 ('gyro_offset_z', '0.690'),
             ])
 
-        self.rate = self.get_parameter('rate').get_parameter_value().double_value
+        self.rate = self.get_parameter('imu_rate').get_parameter_value().double_value
         self._imu_frame_id = self.get_parameter('imu_frame_id').get_parameter_value().string_value
         self._imu_bus = self.get_parameter('imu_bus').get_parameter_value().integer_value
         _accel_offset_x = self.get_parameter('accel_offset_x').get_parameter_value().double_value
@@ -45,6 +45,7 @@ class ImuPublisherNode(Node):
                                 'y': _accel_offset_y,
                                 'z': _accel_offset_z
                                 }
+        
         self._setGyroOffset = {'x': _gyro_offset_x,
                                 'y': _gyro_offset_y,
                                 'z': _gyro_offset_z
