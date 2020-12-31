@@ -26,7 +26,7 @@ class ImuPublisherNode(Node):
             ])
 
         # Pin numbers are the GPIO# value, not the literal pin number.
-        self.rate = self.get_parameter('imu_rate').get_parameter_value().double_value
+        self.rate = self.get_parameter('rate').get_parameter_value().double_value
         self._imu_frame_id = self.get_parameter('imu_frame_id').get_parameter_value().string_value
         self._imu_bus = self.get_parameter('imu_bus').get_parameter_value().integer_value
         _accel_offset_x = self.get_parameter('accel_offset_x').get_parameter_value().double_value

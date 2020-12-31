@@ -46,7 +46,7 @@ class TankControlNode(Node):
         self._max_speed = self.get_parameter('max_speed').get_parameter_value().double_value
         self._wheel_base = self.get_parameter('wheel_base').get_parameter_value().double_value
 
-        self._cmd_vel_topic = '/cmd_vel']
+        self._cmd_vel_topic = '/cmd_vel'
 
         self._last_received = self._time_to_double(self.get_clock().now().to_msg())
         
