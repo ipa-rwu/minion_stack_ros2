@@ -54,6 +54,11 @@ class ImuPublisherNode(Node):
         self.get_logger().info('offset accel z: %f'%self._setAccelOffset['z'])
 
 
+        self.get_logger().info('offset gyro x: %f'%self._setGyroOffset['x'])
+        self.get_logger().info('offset gyro y: %f'%self._setGyroOffset['y'])
+        self.get_logger().info('offset gyro z: %f'%self._setGyroOffset['z'])
+
+
         # Setup publisher for imu message
         self.publisher_imu = self.create_publisher(Imu, self._imu_topic, 10)
         self._last_pub_imu = self._time_to_double(self.get_clock().now().to_msg())

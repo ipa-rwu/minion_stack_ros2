@@ -14,7 +14,9 @@ tank_contol:
     max_pwm: 255
     # The distance between two wheel(track)
     wheel_base: 1 #0.15
-    
+
+imu_publisher:
+  ros__parameters:    
     imu_frame_id: imu_link
     imu_bus: 3
     accel_offset_x: -0.540
@@ -24,4 +26,3 @@ tank_contol:
     gyro_offset_y: -0.142
     gyro_offset_z: 0.690
     imu_rate: 10.0
-    
