@@ -25,4 +25,4 @@ imu_publisher:
     gyro_offset_x: 0.393
     gyro_offset_y: -0.142
     gyro_offset_z: 0.690
-    imu_rate: 10.0
+    imu_rate: 1

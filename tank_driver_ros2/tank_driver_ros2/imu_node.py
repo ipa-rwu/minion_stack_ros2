@@ -14,7 +14,7 @@ def main():
     _thread = threading.Thread(target=rclpy.spin, args=(imu_node, ), daemon=True)
     _thread.start()  
 
-    rate = imu_node.create_rate(10.0)
+    rate = imu_node.create_rate(imu_node.rate)
 
     try:
         while rclpy.ok():
