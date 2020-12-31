@@ -14,7 +14,7 @@ class ImuPublisherNode(Node):
         self.declare_parameters(
             namespace='',
             parameters=[
-                ('imu_rate', "10.0"),
+                ('rate', "10.0"),
                 ('imu_frame_id', 'imu_link'),
                 ('imu_bus', '3'),
                 ('accel_offset_x', '0.120'),
@@ -25,7 +25,6 @@ class ImuPublisherNode(Node):
                 ('gyro_offset_z', '0.690'),
             ])
 
-        # Pin numbers are the GPIO# value, not the literal pin number.
         self.rate = self.get_parameter('rate').get_parameter_value().double_value
         self._imu_frame_id = self.get_parameter('imu_frame_id').get_parameter_value().string_value
         self._imu_bus = self.get_parameter('imu_bus').get_parameter_value().integer_value
@@ -37,6 +36,7 @@ class ImuPublisherNode(Node):
         _gyro_offset_z = self.get_parameter('gyro_offset_z').get_parameter_value().double_value
         
         self.get_logger().info('imu rate: %f'% self.rate)
+        self.get_logger().info('frame id: %s'% self._imu_frame_id)
 
 
         self._imu_topic = '/imu'
