@@ -25,7 +25,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'tank_contol = tank_driver_ros2.main:main'
+            'tank_contol = tank_driver_ros2.motor_node:main',
+            'imu_publisher = tank_driver_ros2.imu_node:main'
         ],
     },
 )
