@@ -17,7 +17,7 @@ tank_contol:
     
     imu_frame_id: imu_link
     imu_bus: 3
-    accel_offset_x: 0.120
+    accel_offset_x: -0.55
     accel_offset_y: -0.538
     accel_offset_z: 0.348
     gyro_offset_x: 0.430
