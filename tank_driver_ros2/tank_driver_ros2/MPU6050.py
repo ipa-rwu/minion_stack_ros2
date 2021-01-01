@@ -8,6 +8,7 @@ Copyright 2015
 import smbus
 from scipy.spatial.transform import Rotation
 import math
+import time
 class MPU6050:
 
     # Global Variables
@@ -83,7 +84,7 @@ class MPU6050:
         # Read the data from the registers
         high = self.bus.read_byte_data(self.address, register)
         low = self.bus.read_byte_data(self.address, register + 1)
-        
+
         value = (high << 8) + low
 
         if (value >= 0x8000):
@@ -148,14 +149,15 @@ class MPU6050:
     # tank offset: 0.120 -0.538 10.155 
     def callibrate_accel(self):
         accelCalli = [0,0,0]
-        for i in range(500):
+        for i in range(1000):
             accelPresent =  self.get_accel_data()
             accelCalli[0] += accelPresent['x']
             accelCalli[1] += accelPresent['y']
             accelCalli[2] += accelPresent['z']
+            time.sleep(0.02)
 
         for j in range(3):
-            accelCalli[j] = accelCalli[j]/500
+            accelCalli[j] = accelCalli[j]/1000
         accelCalli[2] = accelCalli[2] - self.GRAVITIY_MS2
         return {'x': accelCalli[0], 'y': accelCalli[1], 'z': accelCalli[2]}
 
@@ -251,6 +253,7 @@ class MPU6050:
             gyroCalli[0] += gyroPresent['x']
             gyroCalli[1] += gyroPresent['y']
             gyroCalli[2] += gyroPresent['z']
+            time.sleep(0.02)
 
         for j in range(3):
             gyroCalli[j] = gyroCalli[j]/500
