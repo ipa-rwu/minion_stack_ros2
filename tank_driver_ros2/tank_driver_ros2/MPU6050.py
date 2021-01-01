@@ -81,15 +81,8 @@ class MPU6050:
         Returns the combined read results.
         """
         # Read the data from the registers
-        try:
-            high = self.bus.read_byte_data(self.address, register)
-        except:
-            pass
-
-        try:
-            low = self.bus.read_byte_data(self.address, register + 1)
-        except:
-            pass
+        high = self.bus.read_byte_data(self.address, register)
+        low = self.bus.read_byte_data(self.address, register + 1)
         
         value = (high << 8) + low
 

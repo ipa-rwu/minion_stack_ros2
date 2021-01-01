@@ -76,40 +76,44 @@ class ImuPublisherNode(Node):
     def pub_imu(self):
         now = self.get_clock().now().to_msg()
         elapsedTime = self._time_to_double(now) - self._last_pub_imu
-        accel_data = self._imu.get_accel_data()
-        gyro_data = self._imu.get_gyro_data()
-        self.imu_data.header.stamp = now
-        self.imu_data.linear_acceleration.x = accel_data['x'] - self._setAccelOffset['x']
-        self.imu_data.linear_acceleration.y = accel_data['y'] - self._setAccelOffset['y']
-        self.imu_data.linear_acceleration.z = accel_data['z'] - self._setAccelOffset['z']
+        try:
+            accel_data = self._imu.get_accel_data()
+            gyro_data = self._imu.get_gyro_data()
+            self.imu_data.header.stamp = now
+            self.imu_data.linear_acceleration.x = accel_data['x'] - self._setAccelOffset['x']
+            self.imu_data.linear_acceleration.y = accel_data['y'] - self._setAccelOffset['y']
+            self.imu_data.linear_acceleration.z = accel_data['z'] - self._setAccelOffset['z']
 
-        GyroX = gyro_data['x'] - self._setGyroOffset['x']
-        GyroY = gyro_data['y'] - self._setGyroOffset['y']
-        GyroZ = gyro_data['z'] - self._setGyroOffset['z']
+            GyroX = gyro_data['x'] - self._setGyroOffset['x']
+            GyroY = gyro_data['y'] - self._setGyroOffset['y']
+            GyroZ = gyro_data['z'] - self._setGyroOffset['z']
 
-        self.imu_data.angular_velocity.x = math.radians(GyroX)  
-        self.imu_data.angular_velocity.y = math.radians(GyroY)  
-        self.imu_data.angular_velocity.z = math.radians(GyroZ)
+            self.imu_data.angular_velocity.x = math.radians(GyroX)  
+            self.imu_data.angular_velocity.y = math.radians(GyroY)  
+            self.imu_data.angular_velocity.z = math.radians(GyroZ)
 
-        accelAngle = self._imu.get_accel_angle(self._setAccelOffset)
+            accelAngle = self._imu.get_accel_angle(self._setAccelOffset)
 
-        self.gyroAngleX = self.gyroAngleX + GyroX * elapsedTime
-        self.gyroAngleY = self.gyroAngleY + GyroY * elapsedTime
+            self.gyroAngleX = self.gyroAngleX + GyroX * elapsedTime
+            self.gyroAngleY = self.gyroAngleY + GyroY * elapsedTime
 
-        roll = 0.96 * self.gyroAngleX + 0.04 * accelAngle['x']
-        pitch = 0.96 * self.gyroAngleY + 0.04 * accelAngle['y']
-        yaw =  self.imu_yaw + GyroZ * elapsedTime
+            roll = 0.96 * self.gyroAngleX + 0.04 * accelAngle['x']
+            pitch = 0.96 * self.gyroAngleY + 0.04 * accelAngle['y']
+            yaw =  self.imu_yaw + GyroZ * elapsedTime
 
-        rot = Rotation.from_euler('xyz', [roll, pitch, yaw], degrees=True)
-        rot_quat = rot.as_quat()
+            rot = Rotation.from_euler('xyz', [roll, pitch, yaw], degrees=True)
+            rot_quat = rot.as_quat()
 
-        self.imu_data.orientation.x = rot_quat[0]
-        self.imu_data.orientation.y = rot_quat[1]
-        self.imu_data.orientation.z = rot_quat[2]
-        self.imu_data.orientation.w = rot_quat[3]
-        self.publisher_imu.publish(self.imu_data)
+            self.imu_data.orientation.x = rot_quat[0]
+            self.imu_data.orientation.y = rot_quat[1]
+            self.imu_data.orientation.z = rot_quat[2]
+            self.imu_data.orientation.w = rot_quat[3]
+            self.publisher_imu.publish(self.imu_data)
 
-        self._last_pub_imu = self._time_to_double(now)
+            self._last_pub_imu = self._time_to_double(now)
+        except:
+            self.get_logger().info('IO error')
+            pass
 
     def shutdown(self):
         # Reset pin state.
