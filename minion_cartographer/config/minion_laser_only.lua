@@ -5,8 +5,8 @@ options = {
   map_builder = MAP_BUILDER,
   trajectory_builder = TRAJECTORY_BUILDER,
   map_frame = "map",
-  tracking_frame = "laser",
-  published_frame = "laser",
+  tracking_frame = "base_link",
+  published_frame = "base_link",
   odom_frame = "odom",
   provide_odom_frame = true,
   publish_frame_projected_to_2d = true,
@@ -30,18 +30,46 @@ options = {
 
 MAP_BUILDER.use_trajectory_builder_2d = true
 
-TRAJECTORY_BUILDER_2D.submaps.num_range_data = 35
-TRAJECTORY_BUILDER_2D.min_range = 0.3
-TRAJECTORY_BUILDER_2D.max_range = 8.0
-TRAJECTORY_BUILDER_2D.missing_data_ray_length = 1.
-TRAJECTORY_BUILDER_2D.use_imu_data = false
-TRAJECTORY_BUILDER_2D.use_online_correlative_scan_matching = true
-TRAJECTORY_BUILDER_2D.real_time_correlative_scan_matcher.linear_search_window = 0.1
-TRAJECTORY_BUILDER_2D.real_time_correlative_scan_matcher.translation_delta_cost_weight = 10.
-TRAJECTORY_BUILDER_2D.real_time_correlative_scan_matcher.rotation_delta_cost_weight = 1e-1
 
-POSE_GRAPH.optimization_problem.huber_scale = 1e2
-POSE_GRAPH.optimize_every_n_nodes = 35
+
+POSE_GRAPH.constraint_builder.global_localization_min_score = 0.55
+
+TRAJECTORY_BUILDER_2D.ceres_scan_matcher.rotation_weight = 4e2
+TRAJECTORY_BUILDER_2D.ceres_scan_matcher.translation_weight = 2e2
+TRAJECTORY_BUILDER_2D.max_range = 6
+TRAJECTORY_BUILDER_2D.min_range = 0.15
+TRAJECTORY_BUILDER_2D.num_accumulated_range_data = 1
+TRAJECTORY_BUILDER_2D.submaps.num_range_data = 100
+TRAJECTORY_BUILDER_2D.submaps.range_data_inserter.probability_grid_range_data_inserter.hit_probability = 0.55
+TRAJECTORY_BUILDER_2D.submaps.range_data_inserter.probability_grid_range_data_inserter.miss_probability = 0.49
+
+TRAJECTORY_BUILDER_2D.real_time_correlative_scan_matcher.linear_search_window = 0.1
+TRAJECTORY_BUILDER_2D.real_time_correlative_scan_matcher.angular_search_window = math.rad(120)
+
+TRAJECTORY_BUILDER_2D.motion_filter.max_angle_radians = math.rad(0.1)
+TRAJECTORY_BUILDER_2D.missing_data_ray_length = 3.
+TRAJECTORY_BUILDER_2D.use_imu_data = false
+TRAJECTORY_BUILDER_2D.use_online_correlative_scan_matching = true 
+
+POSE_GRAPH.constraint_builder.max_constraint_distance = 100
 POSE_GRAPH.constraint_builder.min_score = 0.65
+POSE_GRAPH.constraint_builder.sampling_ratio = 0.7
+POSE_GRAPH.global_constraint_search_after_n_seconds = 3
+POSE_GRAPH.optimize_every_n_nodes = 100
+-- MAP_BUILDER.use_trajectory_builder_2d = true
+
+-- TRAJECTORY_BUILDER_2D.submaps.num_range_data = 35
+-- TRAJECTORY_BUILDER_2D.min_range = 0.3
+-- TRAJECTORY_BUILDER_2D.max_range = 3.0
+-- TRAJECTORY_BUILDER_2D.missing_data_ray_length = 3.
+-- TRAJECTORY_BUILDER_2D.use_imu_data = false
+-- TRAJECTORY_BUILDER_2D.use_online_correlative_scan_matching = true
+-- TRAJECTORY_BUILDER_2D.real_time_correlative_scan_matcher.linear_search_window = 0.05
+-- TRAJECTORY_BUILDER_2D.real_time_correlative_scan_matcher.translation_delta_cost_weight = 10.
+-- TRAJECTORY_BUILDER_2D.real_time_correlative_scan_matcher.rotation_delta_cost_weight = 1e-1
+
+-- POSE_GRAPH.optimization_problem.huber_scale = 1e2
+-- POSE_GRAPH.optimize_every_n_nodes = 35
+-- POSE_GRAPH.constraint_builder.min_score = 0.65
 
 return options
