@@ -19,10 +19,10 @@ imu_publisher:
   ros__parameters:    
     imu_frame_id: imu_link
     imu_bus: 3
-    accel_offset_x: -0.540
-    accel_offset_y: -0.570
-    accel_offset_z: 0.290
+    accel_offset_x: -0.450
+    accel_offset_y: -0.392
+    accel_offset_z: 0.291
     gyro_offset_x: 0.393
-    gyro_offset_y: -0.142
-    gyro_offset_z: 0.690
+    gyro_offset_y: -0.073
+    gyro_offset_z: 0.695
     imu_rate: 50.0
