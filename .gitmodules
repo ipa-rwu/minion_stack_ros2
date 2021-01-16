@@ -1,4 +1,4 @@
-[submodule "./teleop_twist_joy"]
-	path = ./teleop_twist_joy
-	url = https://github.com/ros2/teleop_twist_joy/
+[submodule "teleop_twist_joy"]
+	path = teleop_twist_joy
+	url = https://github.com/ros2/teleop_twist_joy.git
 	branch = foxy
