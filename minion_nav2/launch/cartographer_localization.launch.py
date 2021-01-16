@@ -122,11 +122,11 @@ def generate_launch_description():
                        '-configuration_basename', configuration_basename]),
 
 
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([minion_cartographer_launch_dir, '/occupancy_grid.launch.py']),
-            launch_arguments={'use_sim_time': use_sim_time, 'resolution': resolution,
-                              'publish_period_sec': publish_period_sec}.items(),
-        ),
+        # IncludeLaunchDescription(
+        #     PythonLaunchDescriptionSource([minion_cartographer_launch_dir, '/occupancy_grid.launch.py']),
+        #     launch_arguments={'use_sim_time': use_sim_time, 'resolution': resolution,
+        #                       'publish_period_sec': publish_period_sec}.items(),
+        # ),
 
         Node(
             package='nav2_lifecycle_manager',
